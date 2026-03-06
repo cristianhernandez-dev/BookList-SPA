@@ -1,43 +1,47 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import FormLibro from '../components/FormLibro.vue'
 import Libro from '../components/Libro.vue'
 
-import { libros, agregarLibro, eliminarLibro } from '../data/librosStore'
+const libros = ref([
+  {
+    id: 1,
+    titulo: 'Cien años de soledad',
+    autor: 'Gabriel García Márquez',
+    categoria: 'Ficción',
+    descripcion: 'Una novela emblemática de la literatura latinoamericana.'
+  },
+  {
+    id: 2,
+    titulo: 'Don Quijote de la Mancha',
+    autor: 'Miguel de Cervantes',
+    categoria: 'Historia',
+    descripcion: 'Una obra clásica de la literatura en español.'
+  }
+])
 
-const filtro = ref('')
+const agregarLibro = (libro) => {
+  libros.value.push(libro)
+}
 
-const librosFiltrados = computed(() => {
-  const q = filtro.value.trim().toLowerCase()
-  if (!q) return libros.value
-  return libros.value.filter(l =>
-    l.autor.toLowerCase().includes(q) || l.categoria.toLowerCase().includes(q)
-  )
-})
+const eliminarLibro = (id) => {
+  libros.value = libros.value.filter(libro => libro.id !== id)
+}
 </script>
 
 <template>
   <section>
-    <h1>Lista de libros</h1>
+    <FormLibro @agregar-libro="agregarLibro" />
 
-    <div style="margin:12px 0;">
-      <label>
-        Filtrar por autor o categoría:
-        <input v-model="filtro" placeholder="Ej: ficción, historia, robert..." />
-      </label>
-    </div>
+    <h2 class="titulo-lista">Listado de libros</h2>
 
-    <FormLibro @agregar="agregarLibro" />
-
-    <hr style="margin:18px 0;" />
-
-    <p v-if="librosFiltrados.length === 0">
-      No hay libros disponibles (o el filtro no encontró resultados).
+    <p v-if="libros.length === 0" class="sin-libros">
+      No hay libros disponibles.
     </p>
 
-    <div v-else style="display:grid; gap:12px; max-width:720px;">
+    <div v-else class="grid-libros">
       <Libro
-        v-for="libro in librosFiltrados"
+        v-for="libro in libros"
         :key="libro.id"
         :libro="libro"
         @eliminar="eliminarLibro"
@@ -47,5 +51,19 @@ const librosFiltrados = computed(() => {
 </template>
 
 <style scoped>
-input { width: 100%; max-width:520px; padding: 8px; margin-top: 4px; }
+.titulo-lista {
+  text-align: center;
+  margin: 30px 0 20px;
+}
+
+.sin-libros {
+  text-align: center;
+  color: #777;
+}
+
+.grid-libros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
 </style>

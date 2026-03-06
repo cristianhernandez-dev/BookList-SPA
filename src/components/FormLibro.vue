@@ -1,80 +1,135 @@
 <script setup>
 import { reactive } from 'vue'
-const emit = defineEmits(['agregar'])
 
-const form = reactive({
+const emit = defineEmits(['agregar-libro'])
+
+const nuevoLibro = reactive({
   titulo: '',
   autor: '',
-  categoria: 'Ficción',
-  descripcion: '',
+  categoria: '',
+  descripcion: ''
 })
 
-function limpiar() {
-  form.titulo = ''
-  form.autor = ''
-  form.categoria = 'Ficción'
-  form.descripcion = ''
-}
+const agregarLibro = () => {
+  if (!nuevoLibro.titulo.trim() || !nuevoLibro.autor.trim() || !nuevoLibro.categoria.trim()) {
+    alert('Completa los campos obligatorios.')
+    return
+  }
 
-function enviar() {
-  const titulo = form.titulo.trim()
-  const autor = form.autor.trim()
-  if (!titulo || !autor) return
-
-  emit('agregar', {
-    titulo,
-    autor,
-    categoria: form.categoria,
-    descripcion: form.descripcion.trim(),
+  emit('agregar-libro', {
+    id: Date.now(),
+    titulo: nuevoLibro.titulo,
+    autor: nuevoLibro.autor,
+    categoria: nuevoLibro.categoria,
+    descripcion: nuevoLibro.descripcion
   })
 
-  limpiar()
+  nuevoLibro.titulo = ''
+  nuevoLibro.autor = ''
+  nuevoLibro.categoria = ''
+  nuevoLibro.descripcion = ''
 }
 </script>
 
 <template>
-  <form @submit.prevent="enviar" style="display:grid; gap:10px; max-width:520px;">
-    <label>
-      Título
-      <input v-model="form.titulo" @keyup.enter="enviar" placeholder="Ej: Clean Code" />
-    </label>
+  <section class="form-section">
+    <h2>Agregar libro</h2>
 
-    <label>
-      Autor
-      <input v-model="form.autor" @keyup.enter="enviar" placeholder="Ej: Robert C. Martin" />
-    </label>
+    <form class="form-libro" @submit.prevent="agregarLibro">
+      <input
+        v-model="nuevoLibro.titulo"
+        type="text"
+        placeholder="Título del libro"
+        @keyup.enter="agregarLibro"
+      />
 
-    <label>
-      Categoría
-      <select v-model="form.categoria">
+      <input
+        v-model="nuevoLibro.autor"
+        type="text"
+        placeholder="Autor"
+      />
+
+      <select v-model="nuevoLibro.categoria">
+        <option disabled value="">Seleccione una categoría</option>
         <option>Ficción</option>
-        <option>No ficción</option>
-        <option>Educación</option>
+        <option>No Ficción</option>
         <option>Historia</option>
-        <option>Tecnología</option>
-        <option>Novela</option>
-        <option>Autoayuda</option>
+        <option>Ciencia</option>
+        <option>Educación</option>
       </select>
-    </label>
 
-    <label>
-      Descripción (opcional)
-      <textarea v-model="form.descripcion" rows="3" placeholder="Notas..."></textarea>
-    </label>
+      <textarea
+        v-model="nuevoLibro.descripcion"
+        rows="4"
+        placeholder="Descripción del libro"
+      ></textarea>
 
-    <div style="display:flex; gap:8px;">
-      <button type="submit">Agregar</button>
-      <button type="button" @click.once="limpiar">Limpiar (once)</button>
+      <button type="submit">Agregar libro</button>
+    </form>
+
+    <div class="preview">
+      <h3>Vista previa</h3>
+      <p><strong>Título:</strong> {{ nuevoLibro.titulo }}</p>
+      <p><strong>Autor:</strong> {{ nuevoLibro.autor }}</p>
+      <p><strong>Categoría:</strong> {{ nuevoLibro.categoria }}</p>
+      <p><strong>Descripción:</strong> {{ nuevoLibro.descripcion }}</p>
     </div>
-
-    <small style="opacity:.75;">
-      Vista previa reactiva: {{ form.titulo }} / {{ form.autor }} / {{ form.categoria }}
-    </small>
-  </form>
+  </section>
 </template>
 
 <style scoped>
-input, select, textarea { width: 100%; padding: 8px; margin-top: 4px; }
-button { padding: 8px 12px; }
-label { font-size: 14px; }
+.form-section {
+  margin-bottom: 30px;
+}
+
+.form-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-libro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 600px;
+  margin: 0 auto 24px;
+}
+
+.form-libro input,
+.form-libro select,
+.form-libro textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.form-libro button {
+  background-color: #42b883;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 15px;
+}
+
+.form-libro button:hover {
+  background-color: #369b6e;
+}
+
+.preview {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f8f9fb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.preview h3 {
+  margin-top: 0;
+}
 </style>
