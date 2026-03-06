@@ -1,15 +1,32 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import InicioView from '../views/InicioView.vue'
 import ListaLibros from '../views/ListaLibros.vue'
+import CatalogoLibros from '../views/CatalogoLibros.vue'
 import DetalleLibro from '../views/DetalleLibro.vue'
 
 const routes = [
-  { path: '/', name: 'inicio', component: InicioView },
-  { path: '/libros', name: 'libros', component: ListaLibros },
-  { path: '/libros/:id', name: 'detalle-libro', component: DetalleLibro, props: true },
+  {
+    path: '/',
+    component: InicioView
+  },
+  {
+    path: '/catalogo',
+    component: CatalogoLibros
+  },
+  {
+    path: '/libros',
+    component: ListaLibros
+  },
+  {
+    path: '/libros/:id',
+    component: DetalleLibro,
+    props: true
+  }
 ]
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes
 })
+
+export default router

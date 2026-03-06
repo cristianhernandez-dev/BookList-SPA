@@ -1,11 +1,6 @@
 <script setup>
-import FormLibro from '../components/FormLibro.vue'
 import Libro from '../components/Libro.vue'
 import { libros } from '../data/libros'
-
-const agregarLibro = (libro) => {
-  libros.value.push(libro)
-}
 
 const eliminarLibro = (id) => {
   libros.value = libros.value.filter(libro => libro.id !== id)
@@ -14,9 +9,7 @@ const eliminarLibro = (id) => {
 
 <template>
   <section>
-    <FormLibro @agregar-libro="agregarLibro" />
-
-    <h2 class="titulo-lista">Listado de libros</h2>
+    <h2 class="titulo-lista">Catálogo de libros</h2>
 
     <p v-if="libros.length === 0" class="sin-libros">
       No hay libros disponibles.
@@ -41,7 +34,7 @@ const eliminarLibro = (id) => {
 <style scoped>
 .titulo-lista {
   text-align: center;
-  margin: 40px 0 25px;
+  margin: 10px 0 25px;
 }
 
 .sin-libros {
@@ -52,7 +45,8 @@ const eliminarLibro = (id) => {
 .grid-libros {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
+  gap: 24px;
+  margin-top: 10px;
 }
 
 .lista-enter-active,

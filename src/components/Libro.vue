@@ -7,34 +7,87 @@ const emit = defineEmits(['eliminar'])
 </script>
 
 <template>
+
   <article class="libro-card">
+
     <h3>{{ libro.titulo }}</h3>
-    <p><strong>Autor:</strong> {{ libro.autor }}</p>
-    <p><strong>Categoría:</strong> {{ libro.categoria }}</p>
-    <p v-show="libro.descripcion">
-      <strong>Descripción:</strong> {{ libro.descripcion }}
+
+    <p>
+      <strong>Autor:</strong> {{ libro.autor }}
     </p>
 
+    <p>
+      <strong>Categoría:</strong> {{ libro.categoria }}
+    </p>
+
+   <p v-show="libro.descripcion" class="descripcion">
+  <strong>Descripción:</strong> {{ libro.descripcion }}
+</p>
+
     <div class="acciones">
-      <router-link :to="`/libros/${libro.id}`" class="btn-detalle">
+
+      <router-link
+        :to="`/libros/${libro.id}`"
+        class="btn-detalle"
+      >
         Ver detalle
       </router-link>
 
-      <button class="btn-eliminar" @click="$emit('eliminar', libro.id)">
+      <button
+        class="btn-eliminar"
+        @click="$emit('eliminar', libro.id)"
+      >
         Eliminar
       </button>
+
     </div>
+
   </article>
+
 </template>
 
 <style scoped>
+
+.btn-detalle,
+.btn-eliminar {
+  text-decoration: none;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.btn-detalle:hover {
+  transform: scale(1.05);
+}
+
+.btn-eliminar:hover {
+  transform: scale(1.05);
+}
+
 .libro-card {
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 18px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
+
+.libro-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 22px rgba(0,0,0,0.15);
+  border-color: #42b883;
+}
+
 
 .libro-card h3 {
   margin-top: 0;
@@ -81,4 +134,12 @@ const emit = defineEmits(['eliminar'])
 .btn-eliminar:hover {
   background-color: #c0392b;
 }
+.descripcion {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 </style>

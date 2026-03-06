@@ -56,6 +56,8 @@ const agregarLibro = () => {
         <option>Historia</option>
         <option>Ciencia</option>
         <option>Educación</option>
+        <option>Derecho de Familia</option>
+        <option>Novela</option>
       </select>
 
       <textarea
